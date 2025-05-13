@@ -2,11 +2,19 @@
   <div class="center">
     <h1>Привет, тут будет список учителей школы LOTUS</h1>
     <ul v-show="showList">
-      <li v-for="n in userNames" :key="n">{{ n.name }} <span v-show="showTeacherAge">{{n.age}}&nbsp;лет</span></li>
+      <li
+        @click="toggleActiveName"
+        v-for="(teacher, index) in teachers"
+        :key="index"
+        :class="{ active: activeNames.includes(index) }"
+      >
+        {{ teacher.name }}
+        <span v-show="showTeacherAge">{{ teacher.age }}&nbsp;лет</span>
+      </li>
     </ul>
     <div class="footer">
-      <button @click="showAge">Показать возраст учителей</button>
-      <button @click="toggleList">{{ showList ? 'Скрыть' : 'Показать' }} список учителей</button>
+      <button @click="toggleAgeVisibility">{{ showTeacherAge ? 'Скрыть' : 'Показать' }} возраст учителей</button>
+      <button @click="toggleListVisibility">{{ showList ? 'Скрыть' : 'Показать' }} список учителей</button>
     </div>
   </div>
 </template>
@@ -14,32 +22,44 @@
 <script setup>
 import { ref } from 'vue';
 
-let showTeacherAge = ref(false);
-let showList = ref(true);
+const showTeacherAge = ref(false);
+const showList = ref(true);
+const activeNames = ref([]);
 
-const nameHoverText = 'white';
-const nameHoverBg = 'black';
+const hoverColors = {
+  text: 'white',
+  bg: '#0074D9',
+  bgActive: '#009363',
+}
 
-const userNames = {
-  1: { name: 'Марина Николаевна', age: 34 },
-  2: { name: 'Кристина Михайловна', age: 25 },
-  3: { name: 'Мария Александровна', age: 23 },
-  4: { name: 'Ольга Васильевна', age: 31 },
-  5: { name: 'Наталья Андреевна', age: 30 },
-  6: { name: 'Анастасия Петровна', age: 29 },
-  7: { name: 'Анна Валерьевна', age: 28 },
-  8: { name: 'Дарья Максимовна', age: 27 },
-  9: { name: 'Алена Сергеевна', age: 26 },
-  10: { name: 'Мария Евгеньевна', age: 25 },
-  11: { name: 'Елена Александровна', age: 24 }
-};
+const teachers = [
+  { name: 'Марина Николаевна', age: 34 },
+  { name: 'Кристина Михайловна', age: 25 },
+  { name: 'Мария Александровна', age: 23 },
+  { name: 'Ольга Васильевна', age: 31 },
+  { name: 'Наталья Андреевна', age: 30 },
+  { name: 'Анастасия Петровна', age: 29 },
+  { name: 'Анна Валерьевна', age: 28 },
+  { name: 'Дарья Максимовна', age: 27 },
+  { name: 'Алена Сергеевна', age: 26 },
+  { name: 'Мария Евгеньевна', age: 25 },
+  { name: 'Елена Александровна', age: 24 }
+];
 
+function toggleActiveName(event) {
+  const index = Array.from(event.currentTarget.parentNode.children).indexOf(event.currentTarget);
+  if (activeNames.value.includes(index)) {
+    activeNames.value = activeNames.value.filter(i => i !== index);
+  } else {
+    activeNames.value.push(index);
+  }
+}
 
-function showAge() {
+function toggleAgeVisibility() {
   showTeacherAge.value = !showTeacherAge.value;
 }
 
-function toggleList() {
+function toggleListVisibility() {
   showList.value = !showList.value;
 }
 
@@ -73,7 +93,6 @@ function toggleList() {
   max-width: 600px;
   margin: 0 auto;
   margin-top: 50px;
-
 }
 
 button {
@@ -88,9 +107,21 @@ button {
   user-select: none;
 }
 
-li:hover {
-  color: v-bind(nameHoverText);
-  background-color: v-bind(nameHoverBg);
+li {
+  cursor: pointer;
+  user-select: none;
   transition: 0.25s;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+li:hover {
+  color: v-bind('hoverColors.text');
+  background-color: v-bind('hoverColors.bg');
+}
+
+li.active {
+  color: v-bind('hoverColors.text');
+  background-color: v-bind('hoverColors.bgActive');
 }
 </style>
