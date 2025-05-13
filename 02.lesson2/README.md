@@ -1,5 +1,12 @@
-# Vue 3 + Vite
+Создание Vue-приложения
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Цель:
+освоить работу с основными директивами Vue (v-for, v-if, v-show, v-bind, v-on), научиться динамически управлять отображением данных и событиями в шаблоне.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+Описание/Пошаговая инструкция выполнения домашнего задания:
+Создать Vue-приложение, где:
+
+Вывести список пользователей (например, имена) с помощью v-for.
+Реализовать переключение отображения дополнительной информации (например, возраста) через v-if или v-show.
+Использовать v-bind для изменения цвета текста при наведении.
+Добавить кнопку, которая при клике (v-on) скрывает или показывает весь список.
