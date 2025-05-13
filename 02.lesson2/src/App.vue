@@ -2,7 +2,7 @@
   <div class="center">
     <h1>Привет, тут будет список учителей школы LOTUS</h1>
     <ul v-show="showList">
-      <li v-for="n in userNames" :key="n" :class="{nameHover: showTeacherAge}">{{ n.name }} <span v-show="showTeacherAge">{{n.age}}&nbsp;лет</span></li>
+      <li v-for="n in userNames" :key="n">{{ n.name }} <span v-show="showTeacherAge">{{n.age}}&nbsp;лет</span></li>
     </ul>
     <div class="footer">
       <button @click="showAge">Показать возраст учителей</button>
