@@ -5,15 +5,15 @@
 </template>
 
 <script setup>
-    defineProps(['countBasket'])
+defineProps(['countBasket'])
 </script>
 
 <style lang="scss" scoped>
-    .checkout {
-        margin-left: auto;
-        font-size: 18px;
-        span {
-            font-weight: bold;
-        }
+.checkout {
+    margin-left: auto;
+    font-size: 18px;
+    span {
+        font-weight: bold;
     }
+}
 </style>
