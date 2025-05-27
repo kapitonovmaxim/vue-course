@@ -10,7 +10,7 @@
                 <div class="catalog-search">
                     <search-input v-model="searchQuery" />
                 </div>
-                <router-link :to="{ name: 'new-product'}">
+                <router-link :to="{ name: 'new-product'}" v-if="props.auth">
                     <button class="add_product">Добавить товар</button>
                 </router-link>
             </div>
@@ -47,6 +47,11 @@ const props = defineProps({
         type: Object,
         required: true,
         default: () => ({}),
+    },
+    auth: {
+        type: Boolean,
+        required: false,
+        default: false,
     },
 })
 

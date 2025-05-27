@@ -34,86 +34,81 @@
 
             <div class="checkout-section-user">
                 <form class="popup" @submit="onSubmit">
-                    <div class="success" v-if="success">
-                        <p>Спасибо за заказ {{ firstName }}!</p>
-                    </div>
-                    <div class v-else>
-                        <div class="popup__title">Сделать заказ</div>
-                        <div class="popup__form">
-                            <input
-                                class="popup__input"
-                                type="text"
-                                placeholder="Ваше имя"
-                                v-model="firstName"
-                                v-bind="firstNameAttrs"
-                                autocomplete
-                            />
-                            <span class="error">{{ errors.firstName ? 'Необходимо ваше Имя' : '' }}</span>
+                    <div class="popup__title">Сделать заказ</div>
+                    <div class="popup__form">
+                        <input
+                            class="popup__input"
+                            type="text"
+                            placeholder="Ваше имя"
+                            v-model="firstName"
+                            v-bind="firstNameAttrs"
+                            autocomplete
+                        />
+                        <span class="error">{{ errors.firstName ? 'Необходимо ваше Имя' : '' }}</span>
 
-                            <input
-                                class="popup__input"
-                                type="text"
-                                placeholder="Ваша почта"
-                                v-model="email"
-                                v-bind="emailAttrs"
-                                autocomplete
-                            />
-                            <span
-                                class="error"
-                            >{{ errors.email ? 'Необходимо ввести корректный адрес почты' : '' }}</span>
+                        <input
+                            class="popup__input"
+                            type="text"
+                            placeholder="Ваша почта"
+                            v-model="email"
+                            v-bind="emailAttrs"
+                            autocomplete
+                        />
+                        <span
+                            class="error"
+                        >{{ errors.email ? 'Необходимо ввести корректный адрес почты' : '' }}</span>
 
-                            <input
-                                class="popup__input"
-                                type="text"
-                                placeholder="Ваша телефон"
-                                v-model="phone"
-                                v-bind="phoneAttrs"
-                                autocomplete
-                            />
-                            <span
-                                class="error"
-                            >{{ errors.phone ? 'Необходимо ввести номер телефона' : '' }}</span>
+                        <input
+                            class="popup__input"
+                            type="text"
+                            placeholder="Ваша телефон"
+                            v-model="phone"
+                            v-bind="phoneAttrs"
+                            autocomplete
+                        />
+                        <span
+                            class="error"
+                        >{{ errors.phone ? 'Необходимо ввести номер телефона' : '' }}</span>
 
-                            <select class="popup__input" v-model="checkedTown">
-                                <option disabled value>Выберите ваш город</option>
-                                <option v-for="town in towns" :value="town" :key="town">{{ town }}</option>
-                            </select>
-                            <span
-                                class="error"
-                            >{{ errors.checkedTown ? 'Необходимо выбрать город' : '' }}</span>
+                        <select class="popup__input" v-model="checkedTown">
+                            <option disabled value>Выберите ваш город</option>
+                            <option v-for="town in towns" :value="town" :key="town">{{ town }}</option>
+                        </select>
+                        <span
+                            class="error"
+                        >{{ errors.checkedTown ? 'Необходимо выбрать город' : '' }}</span>
 
-                            <input
-                                class="popup__input"
-                                type="text"
-                                placeholder="Ваш адрес"
-                                v-model="address"
-                                v-bind="addressAttrs"
-                                autocomplete
-                            />
-                            <span
-                                class="error"
-                            >{{ errors.address ? 'Необходимо ввести ваш адрес' : '' }}</span>
+                        <input
+                            class="popup__input"
+                            type="text"
+                            placeholder="Ваш адрес"
+                            v-model="address"
+                            v-bind="addressAttrs"
+                            autocomplete
+                        />
+                        <span
+                            class="error"
+                        >{{ errors.address ? 'Необходимо ввести ваш адрес' : '' }}</span>
 
-                            <div class="policy">
-                                <label>
-                                    <input class="popup__input" type="checkbox" v-model="policy" />Кнопкой "Оформить заказ"
-                                    разрешаю обработку персональных данных
-                                </label>
-                            </div>
-                            <span class="error">
-                                {{
-                                errors.policy ? 'Необходимо согласиться с Политикой Конфиденциальности' : ''
-                                }}
-                            </span>
-
-                            <br />
-                            <textarea class="popup__input" placeholder="Комментарий"></textarea>
-                            <button
-                                class="popup__btn"
-                                :disable="loading"
-                                :class="{ 'popup__btn--loading': loading }"
-                            >Оформить заказ</button>
+                        <div class="policy">
+                            <label>
+                                <input class="popup__input" type="checkbox" v-model="policy" />Кнопкой "Оформить заказ"
+                                разрешаю обработку персональных данных
+                            </label>
                         </div>
+                        <span class="error">
+                            {{
+                            errors.policy ? 'Необходимо согласиться с Политикой Конфиденциальности' : ''
+                            }}
+                        </span>
+
+                        <br />
+                        <textarea class="popup__input" placeholder="Комментарий"></textarea>
+                        <button
+                            class="popup__btn"
+                            :disable="loading"
+                            :class="{ 'popup__btn--loading': loading }"
+                        >Оформить заказ</button>
                     </div>
                 </form>
             </div>
@@ -134,6 +129,7 @@ const products = ref([])
 const loading_error = ref(false)
 
 const emit = defineEmits(['update:basket'])
+const loading = ref(false)
 
 const props = defineProps({
     basket: {
@@ -179,10 +175,7 @@ const onSubmit = handleSubmit(async () => {
             },
         })
         console.log('Ответ сервера:', response.data)
-        success.value = true
         console.log('for server request', values)
-        success.value = true
-
         alert('Заказ успешно оформлен!')
         products.value = []
         emit('update:basket', {})
@@ -195,11 +188,6 @@ const onSubmit = handleSubmit(async () => {
         loading.value = false
     }
 })
-
-const saleOrder = () => {
-    if (confirm('Подтвердить оформление заказа?')) {
-    }
-}
 
 onMounted(async () => {
     try {
@@ -226,8 +214,6 @@ const towns = [
     'Екатеринбург',
     'Нижний Новгород',
 ]
-const loading = ref(false)
-const success = ref(false)
 
 const [firstName, firstNameAttrs] = defineField('firstName', {
     validateOnModelUpdate: false,
