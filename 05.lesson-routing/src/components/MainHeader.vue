@@ -12,23 +12,26 @@
         <router-link to="/checkout" class="checkout-link">
             <main-checkout :count="totalItemsInBasket" />
         </router-link>
-        <router-link :to="{ name: 'login' }" class="header-login" v-if="!props.auth">Войти</router-link>
+        <router-link :to="{ name: 'login' }" class="header-login" v-if="!authStatus">Войти</router-link>
     </header>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref, watch, inject } from 'vue'
 import MainCheckout from '@/components/MainCheckout.vue'
+// import auth from '@/composables/useAuth.js'
+
+const authStatus = inject('isAuth')
 
 const props = defineProps({
     basket: {
         type: Object,
         required: true,
     },
-    auth: {
-        type: Boolean,
-        required: true,
-    },
+})
+
+onMounted(() => {
+    console.log(authStatus.value)
 })
 
 const totalItemsInBasket = computed(() => {

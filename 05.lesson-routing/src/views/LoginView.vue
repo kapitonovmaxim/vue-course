@@ -41,40 +41,29 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
 const emit = defineEmits(['update:auth'])
 
-const isAuth = ref(false)
 const props = defineProps({
     basket: {},
-    auth: {
-        type: Boolean,
-        required: false,
-    },
 })
 
 onMounted(() => {
-    isAuth.value = props.auth || getAuth()
-
-    if (isAuth.value) {
+    if (authStatus.value) {
         router.push('/')
     }
 })
-
+const authStatus = inject('isAuth')
 const router = useRouter()
 const isSubmitting = ref(false)
-
-const getAuth = () => {
-    return window.localStorage.getItem('auth') || false
-}
+const authUser = inject('authUser')
 
 const setAuth = () => {
-    window.localStorage.setItem('auth', true)
-    emit('update:auth', true)
+    authUser()
 }
 
 const { values, errors, defineField, handleSubmit, setFieldError } = useForm({

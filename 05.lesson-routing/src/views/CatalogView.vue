@@ -10,7 +10,7 @@
                 <div class="catalog-search">
                     <search-input v-model="searchQuery" />
                 </div>
-                <router-link :to="{ name: 'new-product'}" v-if="props.auth">
+                <router-link :to="{ name: 'new-product'}" v-if="isAuth">
                     <button class="add_product">Добавить товар</button>
                 </router-link>
             </div>
@@ -42,16 +42,14 @@ const searchQuery = ref('')
 const loading_error = ref(false)
 const products = ref([])
 
+import auth from '@/composables/useAuth.js'
+const isAuth = ref(auth.isAuthenticated())
+
 const props = defineProps({
     basket: {
         type: Object,
         required: true,
         default: () => ({}),
-    },
-    auth: {
-        type: Boolean,
-        required: false,
-        default: false,
     },
 })
 

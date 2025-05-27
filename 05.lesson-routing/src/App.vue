@@ -1,32 +1,32 @@
 <template>
     <div class="app-container">
-        <main-header :basket="basket" :auth="auth" />
+        <main-header :basket="basket" />
         <main class="main-content">
-            <router-view
-                :basket="basket"
-                @update:basket="updateBasket"
-                :auth="auth"
-                @update:auth="updateAuth"
-            />
+            <router-view :basket="basket" @update:basket="updateBasket" />
         </main>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, provide } from 'vue'
 import MainHeader from './components/MainHeader.vue'
 const basket = ref({})
-const auth = ref(false)
+import auth from '@/composables/useAuth.js'
+
+const isAuth = ref(auth.isAuthenticated())
+const updateAuth = (value) => {
+    isAuth.value = value
+}
+const authUser = (bool = true) => {
+    updateAuth(true)
+    auth.set(true)
+}
+provide('isAuth', isAuth)
+provide('authUser', authUser)
 
 const updateBasket = (newBasket) => {
     basket.value = newBasket
 }
-const updateAuth = (newAuth) => {
-    auth.value = newAuth
-}
-onMounted(() => {
-    auth.value = Boolean(window.localStorage.getItem('auth')) || false
-})
 </script>
 
 <style lang="scss" scoped>
