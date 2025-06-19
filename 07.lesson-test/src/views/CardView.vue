@@ -34,8 +34,8 @@
             <button
                 class="add-to-cart-btn"
                 @click="addToCart"
-                :disabled="isAddingToCart"
-            >{{ isAddingToCart ? 'Добавляем...' : 'В корзину' }}</button>
+                :disabled="getCartProduct(product.id)"
+            >{{ getCartProduct(product.id) ? 'В корзине' : 'В корзину' }}</button>
         </template>
     </div>
 </template>
@@ -44,7 +44,10 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+import { useCartStore } from '@/stores/storeCart.js'
 
+const store = useCartStore()
+const { add, remove, getCartProduct } = store
 const route = useRoute()
 const product = ref({})
 const loading = ref(true)
@@ -76,17 +79,11 @@ const handleImageError = () => {
     mainImage.value = fallbackImage
 }
 
-const addToCart = async () => {
-    try {
-        isAddingToCart.value = true
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        console.log('Товар добавлен в корзину:', product.value.id)
-    } catch (err) {
-        console.error('Ошибка добавления в корзину:', err)
-    } finally {
-        isAddingToCart.value = false
-    }
+const addToCart = () => {
+    add(product.value, 1)
 }
+
+const removeFromCart = () => remove(props.product.id)
 
 // Хуки жизненного цикла
 onMounted(() => {

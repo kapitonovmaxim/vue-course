@@ -46,7 +46,7 @@ onMounted(async () => {
         const response = await axios.get('https://api.escuelajs.co/api/v1/products')
         // if 404
         // const response = await axios.get('https://dummyjson.com/products')
-        products.value = response.data.products
+        products.value = response.data
         console.log('response', response)
     } catch (err) {
         console.error('Ошибка:', err)

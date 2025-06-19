@@ -11,6 +11,8 @@ export const useCartStore = defineStore('cart', () => {
     const add = (product, amount = 1) => {
         const index = items.value.findIndex((item) => item.id === product.id);
 
+        console.log('product', product);
+        console.log('index', index);
         if (index > -1) {
             items.value[index].amount += amount;
         } else {
