@@ -2,11 +2,7 @@
     <div class="cart-container">
         <h1>Корзина</h1>
 
-        <template v-if="loading_error">
-            <div class="error-message">Произошла ошибка при загрузке товаров</div>
-        </template>
-
-        <template v-else-if="!store.items || !store.items.length">
+        <template v-if="!products.length">
             <div class="empty-cart">Нет товаров в корзине</div>
             <router-link :to="{ name: 'home' }">
                 <button class="checkout-button">Перейти на главную</button>
@@ -21,7 +17,9 @@
                         <h3 class="product-title">{{ product.title }}</h3>
                         <div class="product-meta">
                             <span class="product-price">{{ product.price }}$</span>
-                            <span class="product-quantity">× {{ getCartProduct(product.id)?.amount }}</span>
+                            <span
+                                class="product-quantity"
+                            >× {{ getCartProduct(product.id)?.amount }}</span>
                         </div>
                     </div>
                 </div>
@@ -127,10 +125,8 @@ import { useCartStore } from '@/stores/storeCart.js'
 const store = useCartStore()
 const { add, remove, getCartProduct, total } = store
 
-
 const router = useRouter()
-const products = ref([])
-const loading_error = ref(false)
+const products = store.items || []
 
 const emit = defineEmits(['update:basket'])
 const loading = ref(false)
@@ -157,27 +153,13 @@ const onSubmit = handleSubmit(async () => {
         console.log('Ответ сервера:', response.data)
         console.log('for server request', values)
         alert('Заказ успешно оформлен!')
-        store.clear();
+        store.clear()
         router.push('/')
     } catch (err) {
         alert(err)
         console.log(err, 'Ошибка при отправке данных')
-        loading_error.value = true
     } finally {
         loading.value = false
-    }
-})
-
-onMounted(async () => {
-    try {
-        const response = await axios.get('https://api.escuelajs.co/api/v1/products')
-
-        products.value = response.data.filter((product) => {
-            return getCartProduct(product.id)
-        })
-    } catch (err) {
-        console.error('Ошибка загрузки товаров:', err)
-        loading_error.value = true
     }
 })
 
