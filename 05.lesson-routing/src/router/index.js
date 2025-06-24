@@ -10,22 +10,22 @@ const routes = [
         {
             path: '/login',
             name: ROUTE_NAMES.LOGIN,
-            component: () => import('@/views/LoginView.vue')
+            component: () => import(/* webpackChunkName: "login" */ '@/views/LoginView.vue')
         },
         {
             path: '/checkout',
             name: ROUTE_NAMES.CHECKOUT,
-            component: () => import('@/views/CheckoutView.vue')
+            component: () => import(/* webpackChunkName: "checkout" */ '@/views/CheckoutView.vue')
         },
         {
             path: '/new-product',
             name: ROUTE_NAMES.NEW_PRODUCT,
-            component: () => import('@/views/AddProductView.vue')
+            component: () => import(/* webpackChunkName: "new_product" */ '@/views/AddProductView.vue')
         },
         {
             path: '/product/:id',
             name: ROUTE_NAMES.PRODUCT,
-            component: () => import('@/views/CardView.vue')
+            component: () => import(/* webpackChunkName: "product" */ '@/views/CardView.vue')
         },
     ];
 
