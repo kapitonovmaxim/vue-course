@@ -6,7 +6,7 @@
             <p>
                 <button clas="popup__btn" @click="resetState()">Добавить ещё один товар?</button>
             </p>
-            <router-link :to="{ name: 'home' }">
+            <router-link :to="{ name: ROUTE_NAMES.HOME }">
                 <button>Перейти на главную</button>
             </router-link>
         </div>
@@ -40,6 +40,8 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
+import { ROUTE_NAMES } from '@/constants/routes.js'
+
 
 const loading = ref(false)
 const success = ref(false)

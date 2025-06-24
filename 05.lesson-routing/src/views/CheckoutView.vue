@@ -8,7 +8,7 @@
 
         <template v-else-if="!products || !products.length">
             <div class="empty-cart">Нет товаров в корзине</div>
-            <router-link :to="{ name: 'home' }">
+            <router-link :to="{ name: ROUTE_NAMES.HOME }">
                 <button class="checkout-button">Перейти на главную</button>
             </router-link>
         </template>
@@ -123,6 +123,7 @@ import axios from 'axios'
 import { computed, onMounted, ref } from 'vue'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
+import { ROUTE_NAMES } from '@/constants/routes.js'
 
 const router = useRouter()
 const products = ref([])

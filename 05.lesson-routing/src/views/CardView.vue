@@ -61,7 +61,7 @@ const fetchProduct = async () => {
     try {
         loading.value = true
         error.value = null
-        const { data } = await axios.get(`https://api.escuelajs.co/api/v1/products/${route.params.id}`)
+        const { data } = await axios.get(`https://dummyjson.com/products/${route.params.id}`)
         product.value = data
         mainImage.value = data.images?.[0] || fallbackImage
     } catch (err) {

@@ -1,12 +1,12 @@
 <template>
     <div class="product">
-        <router-link :to="{ name: 'product', params: { id: product.id } }" class="product__link">
+        <router-link :to="{ name: ROUTE_NAMES.PRODUCT, params: { id: product.id } }" class="product__link">
             <div class="product__title">{{ product.title }}</div>
         </router-link>
         <div class="product__category">{{ product.category?.name }}</div>
 
         <router-link
-            :to="{ name: 'product', params: { id: product.id } }"
+            :to="{ name: ROUTE_NAMES.PRODUCT, params: { id: product.id } }"
             class="product__image-link"
         >
             <div class="product__img">
@@ -28,6 +28,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { ROUTE_NAMES } from '@/constants/routes.js'
 
 const emit = defineEmits(['add-to-cart', 'remove-from-cart', 'update-quantity'])
 

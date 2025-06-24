@@ -10,7 +10,7 @@
                 <div class="catalog-search">
                     <search-input v-model="searchQuery" />
                 </div>
-                <router-link :to="{ name: 'new-product'}" v-if="isAuth">
+                <router-link :to="{ name: ROUTE_NAMES.NEW_PRODUCT}" v-if="isAuth">
                     <button class="add_product">Добавить товар</button>
                 </router-link>
             </div>
@@ -33,6 +33,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import axios from 'axios'
+import { ROUTE_NAMES } from '@/constants/routes.js'
 
 import '@/assets/products.sass'
 import ProductCard from '@/components/ProductCard.vue'
@@ -57,8 +58,8 @@ const emit = defineEmits(['update:basket'])
 
 onMounted(async () => {
     try {
-        const response = await axios.get('https://api.escuelajs.co/api/v1/products')
-        products.value = response.data
+        const response = await axios.get('https://dummyjson.com/products')
+        products.value = response.data.products
     } catch (err) {
         console.error('Ошибка:', err)
         loading_error.value = true

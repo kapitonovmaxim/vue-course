@@ -1,16 +1,32 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import CatalogView from '@/views/CatalogView.vue'
-import CardView from '@/views/CardView.vue'
-import CheckoutView from '@/views/CheckoutView.vue'
-import AddProductView from '@/views/AddProductView.vue'
-import LoginView from '@/views/LoginView.vue'
+import { ROUTE_NAMES } from '@/constants/routes.js'
 
 const routes = [
-        { path: '/', name: 'home', component: CatalogView },
-        { path: '/login', name: 'login', component: LoginView },
-        { path: '/checkout', name: 'checkout', component: CheckoutView },
-        { path: '/new-product', name: 'new-product', component: AddProductView },
-        { path: '/product/:id', name: 'product', component: CardView},
+        {
+            path: '/',
+            name: ROUTE_NAMES.HOME,
+            component: () => import('@/views/CatalogView.vue')
+        },
+        {
+            path: '/login',
+            name: ROUTE_NAMES.LOGIN,
+            component: () => import('@/views/LoginView.vue')
+        },
+        {
+            path: '/checkout',
+            name: ROUTE_NAMES.CHECKOUT,
+            component: () => import('@/views/CheckoutView.vue')
+        },
+        {
+            path: '/new-product',
+            name: ROUTE_NAMES.NEW_PRODUCT,
+            component: () => import('@/views/AddProductView.vue')
+        },
+        {
+            path: '/product/:id',
+            name: ROUTE_NAMES.PRODUCT,
+            component: () => import('@/views/CardView.vue')
+        },
     ];
 
 const router = createRouter({
