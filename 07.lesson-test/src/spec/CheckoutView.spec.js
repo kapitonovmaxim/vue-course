@@ -154,8 +154,6 @@ describe('CheckoutView Component', () => {
 
         await flushPromises()
 
-        console.log('wrapper', wrapper.html());
-
         // Проверяем отображение товаров
         const productItems = wrapper.findAll('.product-item')
         expect(productItems.length).toBe(2)
