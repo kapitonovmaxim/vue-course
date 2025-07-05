@@ -1,7 +1,6 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client/core'
 import { setContext } from '@apollo/client/link/context'
 
-// HTTP connection to the API
 const httpLink = createHttpLink({
     uri: 'http://localhost:5000/graphql',
     credentials: 'include', // Если нужны куки
@@ -11,11 +10,8 @@ const httpLink = createHttpLink({
     },
 })
 
-// Authorization header if needed
 const authLink = setContext((_, { headers }) => {
-    // Получите токен аутентификации, если он есть
-    const token = localStorage.getItem('auth-token')
-    console.log('token', token);
+    // const token = localStorage.getItem('auth-token')
 
     return {
         headers: {
@@ -25,7 +21,6 @@ const authLink = setContext((_, { headers }) => {
     }
 })
 
-// Cache implementation
 const cache = new InMemoryCache({
     typePolicies: {
         Query: {
@@ -40,7 +35,6 @@ const cache = new InMemoryCache({
     },
 })
 
-// Create the apollo client
 export const apolloClient = new ApolloClient({
     link: authLink.concat(httpLink),
     link: httpLink,

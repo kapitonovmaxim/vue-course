@@ -88,11 +88,11 @@ app.get('/products', async (req, res) => {
 	}
 })
 app.get('/products/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const response = await axios.get(`https://dummyjson.com/products/${id}`);
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+	try {
+		const { id } = req.params;
+		const response = await axios.get(`https://dummyjson.com/products/${id}`);
+		res.json(response.data);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 });
