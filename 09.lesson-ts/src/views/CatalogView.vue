@@ -15,55 +15,32 @@
         <div
             v-if="queryError"
             class="error-message"
-        >Произошла ошибка при загрузке данных, попробуйте позже</div>
+        >Произошла ошибка при загрузке данных, попробуй позже</div>
         <div v-else class="products">
             <product-card v-for="product in filteredProducts" :key="product.id" :product="product" />
         </div>
     </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useQuery, useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import type { Ref } from 'vue'
 
 import '@/assets/products.sass'
 import ProductCard from '@/components/ProductCard.vue'
 import SearchInput from '@/components/SearchInput.vue'
 
-interface Product {
-    id: string
-    title: string
-    description: string
-    price: number
-    discountPercentage: number
-    rating: number
-    stock: number
-    brand: string
-    category: string
-    thumbnail: string
-}
-
-interface ProductsResponse {
-    products: {
-        products: Product[]
-        total: number
-        skip: number
-        limit: number
-    }
-}
-
-const searchQuery: Ref<string> = ref('')
+const searchQuery = ref('')
 
 import auth from '@/composables/useAuth.js'
-const isAuth: Ref<boolean> = ref(auth.isAuthenticated())
+const isAuth = ref(auth.isAuthenticated())
 
 const {
     result: getItems,
     loading: queryLoading,
     error: queryError,
-} = useQuery<ProductsResponse>(gql`
+} = useQuery(gql`
     query GetProducts {
         products {
             products {
@@ -86,12 +63,12 @@ const {
 `)
 
 const filteredProducts = computed(() => {
-    if (!getItems.value?.products?.products) return []
+    console.log(getItems)
 
-    if (!searchQuery.value) return getItems.value.products.products
+    if (!searchQuery.value) return getItems.value?.products?.products
 
-    return getItems.value.products.products.filter(
-        (product: Product) =>
+    return getItems.value?.products?.products.filter(
+        (product) =>
             product.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             product.price.toString().includes(searchQuery.value.toLowerCase())
     )

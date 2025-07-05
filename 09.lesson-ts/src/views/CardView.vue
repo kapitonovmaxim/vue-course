@@ -46,43 +46,19 @@
     </div>
 </template>
 
-<script lang="ts" setup>
-import { computed, onMounted } from 'vue'
+<script setup>
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/storeCart.js'
-import { useQuery } from '@vue/apollo-composable'
+import { useQuery, useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { formatPriceToRub } from '@/utils/misc.js'
-import type { Ref } from 'vue'
-
-interface ProductCategory {
-    name?: string
-}
-
-interface Product {
-    id: string
-    title: string
-    description?: string
-    price: number
-    discountPercentage?: number
-    rating?: number
-    stock?: number
-    brand?: string
-    category?: ProductCategory
-    thumbnail?: string
-    images?: string[]
-}
-
-interface ProductQueryResult {
-    product: Product
-}
 
 const store = useCartStore()
 const { add, remove, getCartProduct } = store
 const route = useRoute()
-
+const mainImage = computed(() => result.value?.product?.thumbnail) || fallbackImage
 const fallbackImage = 'https://via.placeholder.com/600x400?text=No+Image'
-const mainImage: Ref<string> = computed(() => result.value?.product?.thumbnail || fallbackImage)
 
 const GET_PRODUCT = gql`
     query GetProduct($id: ID!) {
@@ -102,36 +78,29 @@ const GET_PRODUCT = gql`
     }
 `
 
-const { result, loading, error, refetch } = useQuery<ProductQueryResult>(GET_PRODUCT, () => ({ id: route.params.id }), {
+const { result, loading, error, refetch } = useQuery(GET_PRODUCT, () => ({ id: route.params.id }), {
     fetchPolicy: 'cache-and-network',
 })
 
-const product: Ref<Product | undefined> = computed(() => result.value?.product)
+const product = computed(() => result.value?.product)
 
-const fetchProduct = (): void => {
+const fetchProduct = () => {
     refetch()
 }
 
-const formattedPrice = computed((): string => {
-    if (!product.value?.price) return ''
-    return formatPriceToRub(product.value.price.toFixed(2))
+const formattedPrice = computed(() => {
+    return formatPriceToRub(product.value.price?.toFixed(2))
 })
 
-const handleImageError = (): void => {
+const handleImageError = () => {
     mainImage.value = fallbackImage
 }
 
-const addToCart = (): void => {
-    if (product.value) {
-        add(product.value, 1)
-    }
+const addToCart = () => {
+    add(product.value, 1)
 }
 
-const removeFromCart = (): void => {
-    if (product.value) {
-        remove(product.value.id)
-    }
-}
+const removeFromCart = () => remove(product.value.id)
 </script>
 
 <style lang="scss" scoped>

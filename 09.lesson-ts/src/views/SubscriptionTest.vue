@@ -1,24 +1,12 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onUnmounted } from 'vue'
 import { useSubscription } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import type { Ref } from 'vue'
 
-interface Product {
-    id: string
-    title: string
-    price: number
-    stock: number
-}
-
-interface SubscriptionData {
-    productUpdated: Product
-}
-
-const productData: Ref<Product | null> = ref(null)
-const error: Ref<string | null> = ref(null)
-const subscriptionEnabled: Ref<boolean> = ref(false)
-const subscriptionId: Ref<string> = ref('1')
+const productData = ref(null)
+const error = ref(null)
+const subscriptionEnabled = ref(false)
+const subscriptionId = ref('1')
 
 const PRODUCT_UPDATED_SUBSCRIPTION = gql`
     subscription ProductUpdated($id: ID!) {
@@ -31,11 +19,11 @@ const PRODUCT_UPDATED_SUBSCRIPTION = gql`
     }
 `
 
-const { onResult, onError, restart, stop } = useSubscription<SubscriptionData>(PRODUCT_UPDATED_SUBSCRIPTION, () => ({
-    id: subscriptionId.value,
+const { onResult, onError, restart, stop } = useSubscription(PRODUCT_UPDATED_SUBSCRIPTION, () => ({
+    id: '1',
 }))
 
-const subscribeToProduct = (): void => {
+const subscribeToProduct = () => {
     productData.value = null
     error.value = null
 
@@ -55,17 +43,16 @@ const subscribeToProduct = (): void => {
     console.log('Подписка активирована')
 }
 
-const unsubscribe = (): void => {
+const unsubscribe = () => {
     stop()
     subscriptionEnabled.value = false
     console.log('Подписка отменена')
 }
 
-const changeProduct = (): void => {
-    const newId = prompt('Введите ID товара для подписки:', subscriptionId.value) || '1'
-    subscriptionId.value = newId
+const changeProduct = () => {
+    subscriptionId.value = prompt('Введите ID товара для подписки:', subscriptionId.value) || '1'
     if (subscriptionEnabled.value) {
-        restart()
+        restart() // Перезапускаем подписку с новым ID
     }
 }
 

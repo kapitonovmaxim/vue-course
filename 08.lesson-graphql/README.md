@@ -1,1 +1,1 @@
-# Подключение graphQl & WrbSockets
+# Подключение graphQl & WebSockets
