@@ -14,7 +14,7 @@
 
     <div v-else-if="error" class="error">{{ error }}</div>
 
-    <div v-if="currentWeather" class="weather-info">
+    <div v-if="currentWeather && city.length" class="weather-info">
       <h2>{{ city }}</h2>
       <div class="weather-main">
         <img :src="`https:${currentWeather.condition.icon}`" :alt="currentWeather.condition.text" />
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div v-if="forecast.length > 0" class="forecast">
+    <div v-if="forecast.length > 0  && city.length" class="forecast">
       <h3>Прогноз на 3 дня</h3>
       <div class="forecast-list">
         <div v-for="day in forecast" :key="day.date" class="forecast-day">
